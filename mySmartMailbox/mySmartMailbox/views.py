@@ -1,8 +1,7 @@
 """
 Routes and views for the flask application.
 """
-
-from forms import CleanTable
+import forms
 import config_mysql
 import SQL_lib
 # import config_cosmos
@@ -23,41 +22,60 @@ def home():
                                   host=config_mysql.DB_HOST, port = config_mysql.DB_PORT,
                                   database=config_mysql.DB_NAME)
 
-
     # prepare a cursor object using cursor() method
     cursor = cnx.cursor()
 
-    cleaning_id1="hello"
-    ### Get the data:
-    query = SQL_lib.get_cleanning_data(cleaning_id1)
+    # Get data from database table:
+    # box-id="hello"
+    boxid="mailbox-container-1"
+    query = SQL_lib.get_cleanning_data(boxid)
     SQL_lib.excute_query(query,cursor, extra_text = " Getting data" )
     data = cursor.fetchall()
-    # print data
-    row=data[0]
-    # Get data from colums as list objects
-    data_table=np.array(data)
-    help_B=np.asmatrix(data_table)
-    time_list=help_B[:,0]
-    temp_list=help_B[:,1]
-    ph_list=help_B[:,2]
-    pressure_list=help_B[:,3]
-    conduc_list=help_B[:,4]
+    print data
 
-    data_str = "["
-    Npoints, Nvar = help_B.shape
-    for i in range(Npoints):
-        time = help_B[i,0]
-        press = help_B[i,3]
-        data_str = data_str + "[Date.UTC(%i,%i,%i,%i,%i,%i), %.2f],"%(time.year,time.month,time.day,time.hour,time.minute,time.second, press)
-    data_str = data_str + "]"
-    # disconnect from server
+    # Get first row (= first box)
+    row=data[0]
+    print row
+
+    ## Get data from colums as list objects
+    #data_table=np.array(data)
+    #help_B=np.asmatrix(data_table)
+    #time_list=help_B[:,0]
+    #temp_list=help_B[:,1]
+    #ph_list=help_B[:,2]
+    #pressure_list=help_B[:,3]
+    #conduc_list=help_B[:,4]
+    # Create data string for chart format
+    #data_str = "["
+    #Npoints, Nvar = help_B.shape
+    #for i in range(Npoints):
+    #    time = help_B[i,0]
+    #    press = help_B[i,3]
+    #    data_str = data_str + "[Date.UTC(%i,%i,%i,%i,%i,%i), %.2f],"%(time.year,time.month,time.day,time.hour,time.minute,time.second, press)
+    #data_str = data_str + "]"
+
+    # Disconnect from MySQL server
     cnx.close()
 
-    result = CleanTable(data_str,temp_list,ph_list,pressure_list,conduc_list)
+    # Assign data from mailbox
+    id = row[0]
+    status = row[1]
+    owner = row[2]
+    shipment_no = row[3] 
+    first_name = row[4]
+    last_name = row[5]
+    street = row[6]
+    street_no = row[7]
+    postcode = row[8]
+    city = row[9]
+    country = row[10] 
+    assign_ts = row[11]
 
-    return render_template('results_chart.html', result=result)
+    # Create parsing object
+    mailbox = forms.initMailbox(id, status, owner, shipment_no, first_name,last_name,street,street_no,postcode,city,country,assign_ts)
+    return render_template('index.html', title="Home", mailbox=mailbox)
 
-    print "Information from DDBB fetched"
+    # How to use CosmosDB - Microsoft Azure
     #client = document_client.DocumentClient(config_cosmos.COSMOSDB_HOST, {'masterKey': config_cosmos.COSMOSDB_KEY})
     ## Read databases and take first since id should not be duplicated.
     #db = next((data for data in client.ReadDatabases() if data['id'] == config_cosmos.COSMOSDB_DATABASE))
@@ -88,63 +106,9 @@ def home():
     #    result = result
     #)
 
-@app.route('/result')
-def result(chartID = 'chart_ID', chart_type = 'line', chart_height = 500):
-
-        # Open database connection
-    cnx = mysql.connector.connect(user=config_mysql.DB_USER, password=config_mysql.DB_PASSWORD,
-                                  host=config_mysql.DB_HOST, port = config_mysql.DB_PORT,
-                                  database=config_mysql.DB_NAME)
-
-
-    # prepare a cursor object using cursor() method
-    cursor = cnx.cursor()
-
-    cleaning_id1="hello"
-    ### Get the data:
-    query = SQL_lib.get_cleanning_data(cleaning_id1)
-    SQL_lib.excute_query(query,cursor, extra_text = " Getting data" )
-    data = cursor.fetchall()
-    # print data
-    row=data[0]
-    # Get data from colums as list objects
-    data_table=np.array(data)
-    help_B=np.asmatrix(data_table)
-    time_list=help_B[:,0]
-    temp_list=help_B[:,1]
-    ph_list=help_B[:,2]
-    pressure_list=help_B[:,3]
-    conduc_list=help_B[:,4]
-
-    data_str = "["
-    Npoints, Nvar = help_B.shape
-    for i in range(Npoints):
-        time = help_B[i,0]
-        press = help_B[i,3]
-        data_str = data_str + "[Date.UTC(%i,%i,%i,%i,%i,%i), %.2f],"%(time.year,time.month,time.day,time.hour,time.minute,time.second, press)
-    data_str = data_str + "]"
-    # disconnect from server
-    cnx.close()
-
-    result = CleanTable(data_str,temp_list,ph_list,pressure_list,conduc_list)
-
-    print result.time
-
-    subtitleText='test'
-    # Define dataSet
-    dataSet = result.time
-
-    # Init graph
-    chartID = 'chart_ID'
-    subtitleText='test'
-    pageType = 'graph'
-    chart = {"renderTo": chartID, "type": 'line', "height": 500,}
-    series = [{"name": 'Label1', "data": dataSet}]
-    title = {"text": 'My Title'}
-    xAxis = {"type":"datetime"}
-    yAxis = {"title": {"text": 'yAxis Label'}}
-
-    return render_template('results.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis, result=result)
+@app.route('/list')
+def list():
+    return render_template('list.html', title="List")
 
 @app.route('/contact')
 def contact():

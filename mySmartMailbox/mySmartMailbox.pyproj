@@ -28,6 +28,8 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="mySmartMailbox\config_mysql.py" />
+    <Compile Include="mySmartMailbox\forms.py" />
     <Compile Include="runserver.py" />
     <Compile Include="mySmartMailbox\__init__.py" />
     <Compile Include="mySmartMailbox\views.py" />
@@ -50,6 +52,7 @@
     <Content Include="mySmartMailbox\templates\clear.html" />
     <Content Include="mySmartMailbox\templates\create.html" />
     <Content Include="mySmartMailbox\templates\help.html" />
+    <Content Include="mySmartMailbox\templates\list.html" />
     <Content Include="mySmartMailbox\templates\profile.html" />
     <Content Include="mySmartMailbox\templates\results.html" />
     <Content Include="mySmartMailbox\templates\results_chart.html" />
