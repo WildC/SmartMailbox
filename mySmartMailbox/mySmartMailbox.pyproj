@@ -37,10 +37,22 @@
     <Folder Include="mySmartMailbox\static\" />
     <Folder Include="mySmartMailbox\static\content\" />
     <Folder Include="mySmartMailbox\static\fonts\" />
+    <Folder Include="mySmartMailbox\static\js\" />
     <Folder Include="mySmartMailbox\static\scripts\" />
     <Folder Include="mySmartMailbox\templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="mySmartMailbox\static\js\graph.js" />
+    <Content Include="mySmartMailbox\static\js\hello.js" />
+    <Content Include="mySmartMailbox\static\js\HelloWorld.jsx" />
+    <Content Include="mySmartMailbox\static\js\react-dom.js" />
+    <Content Include="mySmartMailbox\static\js\react.js" />
+    <Content Include="mySmartMailbox\templates\clear.html" />
+    <Content Include="mySmartMailbox\templates\create.html" />
+    <Content Include="mySmartMailbox\templates\help.html" />
+    <Content Include="mySmartMailbox\templates\profile.html" />
+    <Content Include="mySmartMailbox\templates\results.html" />
+    <Content Include="mySmartMailbox\templates\results_chart.html" />
     <Content Include="requirements.txt" />
     <Content Include="mySmartMailbox\static\content\bootstrap.css" />
     <Content Include="mySmartMailbox\static\content\bootstrap.min.css" />

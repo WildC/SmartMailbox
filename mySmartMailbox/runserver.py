@@ -1,5 +1,5 @@
 """
-This script runs the mySmartMailbox application using a development server.
+This script runs the myFlaskWebProject application using a development server.
 """
 
 from os import environ
