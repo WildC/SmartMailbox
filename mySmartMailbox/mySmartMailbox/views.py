@@ -76,7 +76,7 @@ def home():
     return render_template('index.html', title="Home", mailbox=mailbox)
 
     # How to use CosmosDB - Microsoft Azure
-    #client = document_client.DocumentClient(config_cosmos.COSMOSDB_HOST, {'masterKey': config_cosmos.COSMOSDB_KEY})
+    #client = document_client.DocumentClient(config_cosmos.COSMOSDB_HOST, {'mainKey': config_cosmos.COSMOSDB_KEY})
     ## Read databases and take first since id should not be duplicated.
     #db = next((data for data in client.ReadDatabases() if data['id'] == config_cosmos.COSMOSDB_DATABASE))
     ## Read collections and take first since id should not be duplicated.
@@ -143,7 +143,7 @@ def profile():
 @app.route('/clear')
 def clear():
     #"""Renders the contact page."""
-    #client = document_client.DocumentClient(config_cosmos.COSMOSDB_HOST, {'masterKey': config_cosmos.COSMOSDB_KEY})
+    #client = document_client.DocumentClient(config_cosmos.COSMOSDB_HOST, {'mainKey': config_cosmos.COSMOSDB_KEY})
     ## Attempt to delete the database.  This allows this to be used to recreate as well as create
     #try:
     #    db = next((data for data in client.ReadDatabases() if data['id'] == config_cosmos.COSMOSDB_DATABASE))
@@ -172,7 +172,7 @@ def clear():
 @app.route('/create', methods=['GET', 'POST'])
 def create(): 
     if form.validate_on_submit(): # is user submitted vote  
-        #client = document_client.DocumentClient(config_cosmos.COSMOSDB_HOST, {'masterKey': config_cosmos.COSMOSDB_KEY})
+        #client = document_client.DocumentClient(config_cosmos.COSMOSDB_HOST, {'mainKey': config_cosmos.COSMOSDB_KEY})
         ## Read databases and take first since id should not be duplicated.
         #db = next((data for data in client.ReadDatabases() if data['id'] == config_cosmos.COSMOSDB_DATABASE))
         ## Read collections and take first since id should not be duplicated.
